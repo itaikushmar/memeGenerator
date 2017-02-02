@@ -1,0 +1,17 @@
+/*----------  Containers  ----------*/
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.inner-container{
+  width: 100%;
+  max-width: var(--inner-container-width);
+  margin: auto;
+  // padding: em(10px);
+}
+
+.fa{
+  cursor: pointer;
+}

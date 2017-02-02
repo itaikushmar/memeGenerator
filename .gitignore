@@ -1,0 +1,6 @@
+node_modules
+build
+dist/style.css
+.vscode
+assets/imgs/memes/psd
+npm-debug.log

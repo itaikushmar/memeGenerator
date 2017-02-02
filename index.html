@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Generator</title>
+    <link rel="stylesheet" href="dist/style.css">
+</head>
+
+<body onload="init()">
+    <div class="container">
+        <header class="header__fixed">
+            <!-- Header Navigation -->
+            <nav class="main-nav flex justify-center full-height">
+                <input type="checkbox" id="main-nav__mobile-checkbox">
+                <label for="main-nav__mobile-checkbox" class="main-nav__mobile-icon">
+                    <img src="assets/imgs/logo.png" alt="">                    
+                </label>
+                <div class="main-nav__inner">
+                    <ul class="clean-list main-nav__items flex align-center full-height">
+                        <li class="main-nav__item">
+                            <a href="#memes-search" class="main-nav__link" data-translate>
+                            Search
+                    </a>
+                        </li>
+                        <li class="main-nav__item">
+                            <a href="#memes-gallery" class="main-nav__link" data-translate>
+                            Memes
+                        </a>
+                        </li>
+                        <li class="main-nav__item main-nav__logo">
+                            <a href="#" class="arrow-section__down">
+                                <img src="assets/imgs/logo.png" alt="">
+                            </a>
+                        </li>
+                        <li class="main-nav__item">
+                            <a href="#about" class="main-nav__link" data-translate>
+                            About
+                        </a>
+                        </li>
+                        <li class="main-nav__item">
+                            <a href="#contact" class="main-nav__link" data-translate>
+                            Contact
+                        </a>
+                        </li>
+                    </ul>
+                    <span class="language-selcet">
+                    <a href="?lang=he" data-translate>Hebrew</a> / <a href="?" data-translate>English</a>
+                    </span>
+                </div>
+            </nav>
+            <div class="arrow-down"></div>
+        </header>
+        <!-- Meme container -->
+        <main class="memes-gallery__container flex flex-col align-center">
+            <h1 class="title">Meme Generator</h1>
+            <!-- Meme Search -->
+            <div id="memes-search" class="search-meme__container flex flex-col align-center">
+                <div class="search-meme flex flex-col">
+                    <h3 data-translate>Search for Meme by keyword</h3>
+                    <div class="search-area flex space-between">
+                        <input type="text" class="search-meme__input-keyword" oninput="searchKeyWord(this.value);showAutoSearchComplete(this.value)"
+                            placeholder="Write meme key word" />
+                        <div id="keyword_DropDown" class="dropdown-content search-dropdown">
+                            <!--<a href="#" onclick="changeFontFamily(this , 'top'); return false;">Lato</a>
+                            <a href="#" onclick="changeFontFamily(this , 'top'); return false;">David</a>
+                            <a href="#" onclick="changeFontFamily(this , 'top'); return false;">Times New Roman</a>-->
+                        </div>
+                        <i class="fa fa-times-circle-o search-meme__clean" aria-hidden="true" onclick="cleanInput('keyword')"></i>
+                        <i class="fa fa-search search-meme__submit" aria-hidden="true" onclick="searchKeyWord()"></i>
+                    </div>
+                </div>
+                <!--<button onclick="showDropDown('top')" class="dropbtn">
+                                                <i class="fa fa-font" aria-hidden="true"></i>
+                                            </button>-->
+                <!-- Popular Keyboards / Change class name? -->
+                <div class="search-keywords flex flex-wrap space-between">
+                </div>
+                <div class="search-meme__url flex flex-col">
+                    <h3 data-translate>Search for Meme by img URL</h3>
+                    <!--<input type="submit" onclick="return false;" />-->
+                    <div class="search-area flex space-between">
+                        <input type="text" class="search-meme__input-url" placeholder="Download not working." />
+                        <i class="fa fa-times-circle-o search-meme__clean" aria-hidden="true" onclick="cleanInput('url')"></i>
+                        <i class="fa fa-search search-meme__submit" aria-hidden="true" onclick="getMemeURL()"></i>
+                    </div>
+                </div>
+                <div class="memes-display">
+                    <i class="fa fa-list-ul" aria-hidden="true" onclick="toggleMemesLayout()"></i>&nbsp;
+                </div>
+            </div>
+
+            <div class="inner-container flex flex-col flex-wrap align-center">
+                <!-- Meme Hexogan preview -->
+                <div id="memes-gallery" class="memes-gallery">
+                    <!--hexagon try-->
+                    <ul id="categories" class="memes-gallery__grid">
+                    </ul>
+                    <div class="memes-gallery__list" style="display: none">
+                    </div>
+                </div>
+                <!--Hexogan template-->
+                <div class="memes-gallery__meme-template" style="display: none;">
+                    <div class="memes-gallery__meme-list">
+                        <div class="hexagon">
+                            <div class="face1"></div>
+                            <div class="face2"></div>
+                        </div>
+                        <div class="memes-gallery__keywords" style=""></div>
+                    </div>
+                    <li>
+                        <div class="memes-gallery__hexameme">
+                            <img src="" alt="meme" />
+                        </div>
+                    </li>
+                </div>
+            </div>
+
+
+            <!-- Meme Generator -->
+            <div class="meme-generator flex-col flex space-between" style="display: none;">
+                <!-- Back to preview -->
+                <button onclick="backToGallery()" class="meme-generator__button">Go Back</button>
+                <div class="meme-generator__container flex flex-col align-center">
+                    <canvas id="canvas" width="568" height="360" class="meme-generator__canvas">Sorry, no canvas available</canvas>
+                    <!-- Meme Generator form -->
+                    <div class="meme-edit__form flex flex-col">
+                        <!-- Top Text form -->
+                        <div class="top-text__generator flex flex-col align-center">
+                            <label for="topText" data-translate>Top Text</label>
+                            <input type="text" class="topText generator-text__input" id="topText" oninput="writeTextOnMeme()" />
+
+                            <div class="top-text__generator-features flex">
+                                <!-- Text Alignments -->
+                                <div class="top-text__generator-aligns">
+                                    <button class="top-text__align-left" onclick="alignText('right' , 'top')">
+                                            <i class="fa fa-align-left" aria-hidden="true"></i>
+                                        </button>
+                                    <button class="top-text__align-justify" onclick="alignText('center' , 'top')">
+                                            <i class="fa fa-align-center" aria-hidden="true"></i>
+                                        </button>
+                                    <button class="top-text__align-right" onclick="alignText('left' , 'top')">
+                                            <i class="fa fa-align-right" aria-hidden="true"></i>
+                                        </button>
+                                </div>
+                                <!-- Text Font Size -->
+                                <div class="top-text__generator-font-sizes">
+                                    <button class="top-text__increase-font-size" onclick="changeFontSize(5 , 'top');">
+                                        <i class="fa fa-plus" aria-hidden="true" ></i>
+                                    </button>
+                                    <button class="top-text__decrease-font-size" onclick="changeFontSize(-5 , 'top');">
+                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <!-- Text Shadow, Color and Font family-->
+                                <div class="top-text__generator-font-effect">
+                                    <input type="color" class="top-text__color text__color" oninput="changeFontColor(this.value , 'top')">
+                                    </input>
+                                    <button class="top-text__shadow" onclick="changeTextShadow('top')">
+                                            <i class="fa fa-adjust" aria-hidden="true"></i>
+                                        </button>
+                                    <div class="font-dropdown">
+                                        <button onclick="showDropDown('top')" class="dropbtn">
+                                                <i class="fa fa-font" aria-hidden="true"></i>
+                                            </button>
+                                        <div id="top__fontDropDown" class="dropdown-content">
+                                            <a href="#" onclick="changeFontFamily(this , 'top'); return false;">Lato</a>
+                                            <a href="#" onclick="changeFontFamily(this , 'top'); return false;">David</a>
+                                            <a href="#" onclick="changeFontFamily(this , 'top'); return false;">Times New Roman</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="top-text__generator-empty">
+                                    <button class="top-text__empty" onclick="resetText('top')">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bottom Text form -->
+                        <div class="bottom-text__generator flex flex-col align-center">
+                            <label for="bottomText" data-translate>Bottom Text</label>
+                            <input type="text" class="bottomText generator-text__input" id="bottomText" oninput="writeTextOnMeme()" />
+                            <div class="bottom-text__generator-features flex">
+                                <!-- Text Alignments -->
+                                <div class="bottom-text__generator-aligns">
+                                    <button class="bottom-text__align-left" onclick="alignText('right' , 'bottom')">
+                                        <i class="fa fa-align-left" aria-hidden="true"></i>
+                                    </button>
+                                    <button class="bottom-text__align-justify" onclick="alignText( 'center' , 'bottom') ">
+                                        <i class="fa fa-align-center " aria-hidden="true "></i>
+                                    </button>
+                                    <button class="bottom-text__align-right" onclick="alignText('left' , 'bottom')">
+                                        <i class="fa fa-align-right" aria-hidden="true"></i>
+                                        </button>
+                                </div>
+                                <!-- Text Sizes -->
+                                <div class="bottom-text__generator-font-sizes">
+                                    <button class="bottom-text__increase-font-size" onclick="changeFontSize(5 , 'bottom');">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button class="bottom-text__decrease-font-size" onclick="changeFontSize(-5 , 'bottom');">
+                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <!-- Text Shadow, Color and Font family-->
+                                <div class="bottom-text__generator-font-effect">
+                                    <input type="color" class="bottom-text__color text__color" oninput="changeFontColor(this.value , 'bottom')">
+                                    <!--<i class="fa fa-tint" aria-hidden="true"></i>-->
+                                    </input>
+                                    <button class="bottom-text__shadow" onclick="changeTextShadow('bottom')">
+                                            <i class="fa fa-adjust" aria-hidden="true"></i>
+                                         </button>
+                                    <div class="font-dropdown">
+                                        <button onclick="showDropDown('bottom')" class="dropbtn">
+                                                <i class="fa fa-font" aria-hidden="true"></i>
+                                            </button>
+                                        <div id="bottom__fontDropDown" class="dropdown-content">
+                                            <a href="#" onclick="changeFontFamily(this , 'bottom'); return false;">Lato</a>
+                                            <a href="#" onclick="changeFontFamily(this , 'bottom'); return false;">David</a>
+                                            <a href="#" onclick="changeFontFamily(this , 'bottom'); return false;">Times New Roman</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bottom-text__generator-empty">
+                                    <button class="bottom-text__empty" onclick="resetText('bottom')">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meme-generator__buttons">
+                            <a id="download" onclick="downloadMeme(this)">
+                                <button class="meme-generator__button">Download</button>
+                            </a>
+                            <button class="meme-generator__button" onclick="resetCanvas()">Reset</button>
+                            <!--<input type="submit" id="enter-text" onclick="return false;">-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- About section -->
+        <div id="about" class="about flex align-center">
+            <div class="inner-container">
+                <div class="developer flex flex-col align-center">
+                    <!--<div class="developer-pic flex justify-center">
+                        <img src="assets\imgs\memes\2.jpg" class="developer-img img-responsive" />
+                    </div>-->
+                    <div class="developer-pic developer_1 hexagon">
+                        <div class="face1"></div>
+                        <div class="face2"></div>
+                    </div>
+                    <div class="developer-story">
+                        <div class="developer-name" data-translate>
+                            Sahar Sabin
+                        </div>
+                        <div class="developer-title">
+                            Front-end Programmer
+                        </div>
+                        <div class="developer-bio">
+                            I’m a Front end developer with experience in implementing a wide range of Web Application. <br/>                            I am passionate about new technologies and applying them to find creative and elegant solutions.
+                            <br/> HTML5, CSS , CSS3 ,JQuery ,Vue.js , Responsive sites, CMS(Wordpress).
+                        </div>
+                        <div class="developer-socialmedia__icons">
+                            <a href="http://linkedin.com/in/saharSabin">
+                                <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://www.facebook.com/sahar.sabin.1">
+                                <i class="fa fa-facebook-square" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://twitter.com/SaharSabin14">
+                                <i class="fa fa-twitter-square" aria-hidden="true"></i>
+                            </a>
+                            <a href="tel:054-544-80-94">
+                                <i class="fa fa-phone-square" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="developer flex flex-col align-center">
+                    <div class="developer-pic developer_2 hexagon">
+                        <div class="face1"></div>
+                        <div class="face2"></div>
+                    </div>
+                    <div class="developer-story">
+                        <div class="developer-name" data-translate>
+                            Itai Kushmar
+                        </div>
+                        <div class="developer-title">
+                            Human
+                        </div>
+
+                        <div class="developer-bio">
+                            The best way to describe myself is this: <br/> Lorem ipsum dolor sit amet, consectetur adipisicing
+                            elit. A et voluptatum deserunt eius tempore a rchitecto provident quam autem quia fugit veniam
+                            totam, deleniti quaerat iusto eveniet quasi. Libero, aliquam et!
+                        </div>
+                        <div class="developer-socialmedia__icons">
+                            <a href="https://il.linkedin.com/in/itai-kushmar-15574b122">
+                                <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://facebook.com/itaik">
+                                <i class="fa fa-facebook-square" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://twitter.com/realDonaldTrump">
+                                <i class="fa fa-twitter-square" aria-hidden="true"></i>
+                            </a>
+                            <a href="tel:054-934-48-01">
+                                <i class="fa fa-phone-square" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Contact section -->
+        <div id="contact" class="contact flex flex-col">
+            <div class="inner-container flex flex-col">
+                <div class="contact-form__title" data-translate>Get in Touch</div>
+                <div class="contact-form__subtitle" data-translate>In order to get in touch use the contact form below:</div>
+                <div class="contact-form flex flex-col">
+                    <form class="contact-form__form">
+                        <ul class="clean-list">
+                            <li><input type="text" placeholder="Name (Required)" class="contact-form__field" id="form-name" required></li>
+                            <li><input type="email" placeholder="Email (Required)" class="contact-form__field" id="form-email"
+                                    required></li>
+                            <li><input type="text" placeholder="Subject" class="contact-form__field" id="form-subject" required></li>
+                            <li><textarea rows="8" placeholder="Write your message here..." class="contact-form__field" id="form-txt"></textarea></li>
+                        </ul>
+                        <div class="contact-form__send flex flex-col">
+                            <div class="flex space-between">
+                                <input type="Reset" class="contact-form__button contact-form__reset" onclick="resetContactFormInputs(); return false;">
+                                <input type="Submit" class="contact-form__button contact-form__submit" onclick="saveContactLocalStorage(); return false;">
+                            </div>
+                            <div class="contact-form__sent" style="display:none">Your input was sent successfully!</div>
+                        </div>
+                    </form>
+                    <div class="contact-info">
+                        <p> Quisque Hendrerit: purus dapibus, ornare nibh vitae, viverra nibh. Fusce vitae aliquam tellus. Proin
+                            sit amet volutpat libero. Nulla sed nunc et tortor luctus faucibus morbi vitae.</p>
+                        <div class="contact-details">
+                            <p><i class="fa fa-map-marker" aria-hidden="true"></i> Elm St. 14/05 Lost City</p>
+                            <p><i class="fa fa-phone" aria-hidden="true"></i> + 3528 331 86 35</p>
+                            <p><i class="fa fa-envelope" aria-hidden="true"></i> info@hexalcorp.com </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            © Copyright 2016 by Itai & Sahar
+        </footer>
+    </div>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/model.js"></script>
+    <script src="assets/translate/translate.js"></script>
+    <script src="js/output.js"></script>
+    <script src="js/generator.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+$container-width: 1020px;
+$mobile-breakpoint: 642px;
+$tablet-breakpoint: 925px;
+
+:root {
+  /* Layout */
+  --container-width: $container-width;
+  --inner-container-width: 824px;
+  /* Fonts */
+  --primary-font: Lato;
+  --secondary-font: Maven Regular;
+  /* Colors */
+  --main-color: #626262;
+  --sections-bg: #f0f0f0;
+}
+
+

@@ -1,0 +1,80 @@
+.about {
+    height: auto;
+    background-color: #2eb398;
+}
+.developer {
+    color: #d7fcf5;
+    margin-bottom: em(20px);
+    border-left: 1px solid #219d84;
+    border-right: 1px solid #219d84;
+    padding: em(15px);
+    @include from-mobile-only{
+        flex-direction: row;
+    }
+}
+
+.developer-pic {
+    margin: em(70px) 0;
+    cursor: default;
+    @include from-mobile-only{
+        margin-right: em(10px);
+    };
+}
+
+.developer_1{
+    background-image: url('../assets/imgs/SaharSabin.jpg');
+}
+
+.developer_2{
+    background-image: url('../assets/imgs/ItaiKushmar.jpg');
+    @include from-mobile-only {
+    order: 2;
+    }
+}
+
+.developer-name {
+    font-size: rem(30px);
+    font-family: var(--secondary-font);
+}
+
+.developer-title {
+    font-size: rem(18px);
+    color: #20816d;
+    font-family: var(--secondary-font);    
+}
+
+.developer-bio {
+    margin: em(20px) 0;
+}
+
+.developer-story{
+    display: flex;
+    flex-direction: column;
+}
+
+.developer-socialmedia__icons{ 
+    align-self: flex-end;
+    &:last-of-type{
+        margin-right: em(10px);
+    }
+    .fa{
+        font-size: rem(30px);
+        transition: all 0.25s ease;
+        &:hover{
+            color: white;
+        }
+    }  
+}
+
+.developer-socialmedia__icons .fa-facebook-square{
+    color: #35609f;
+}
+.developer-socialmedia__icons .fa-linkedin-square{
+    color: #096c9b;
+}
+.developer-socialmedia__icons .fa-twitter-square{
+    color: #0084b4;
+}
+.developer-socialmedia__icons .fa-phone-square{
+    color: #dc5443;
+}
